@@ -1,23 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Weather Chatbot (Speaking Practice - B2)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather Chatbot - B2 Speaking Practice</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f2f2f2; padding: 20px; }
-    .chat-box { max-width: 700px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
-    .message { margin-bottom: 15px; }
-    .bot { color: #003366; font-weight: bold; }
-    .user { color: #007700; }
-    button { padding: 10px 20px; margin-top: 10px; font-size: 16px; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.unsplash.com/photo-1501973801540-537f08ccae7b?auto=format&fit=crop&w=1600&q=80') no-repeat center center fixed;
+      background-size: cover;
+    }
+    .chat-container {
+      max-width: 600px;
+      margin: 30px auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+    .chat-box {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
+    .message {
+      margin: 10px 0;
+      padding: 10px 15px;
+      border-radius: 20px;
+      max-width: 80%;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+    .bot {
+      background-color: #e0f0ff;
+      align-self: flex-start;
+      color: #003366;
+    }
+    .user {
+      background-color: #d4f8d4;
+      align-self: flex-end;
+      color: #003300;
+      text-align: right;
+      margin-left: auto;
+    }
+    .buttons {
+      text-align: center;
+    }
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #eee;
+    }
   </style>
 </head>
 <body>
-  <div class="chat-box" id="chat">
-    <div class="message bot">🤖 Hello! I'm your weather partner. Would you like to talk about today's weather?</div>
-  </div>
+  <div class="chat-container">
+    <div class="chat-box" id="chat">
+      <div class="message bot">🤖 Hello! I'm your weather partner. Would you like to talk about today's weather?</div>
+    </div>
 
-  <button onclick="startListening()">🎤 Speak</button>
+    <div class="buttons">
+      <button onclick="startListening()">🎤 Speak</button>
+      <button onclick="resetChat()">🔁 Restart</button>
+    </div>
+  </div>
 
   <script>
     const chat = document.getElementById("chat");
@@ -25,7 +79,7 @@
     function addMessage(text, sender) {
       const message = document.createElement("div");
       message.className = `message ${sender}`;
-      message.innerHTML = `${sender === "bot" ? "🤖" : "🧑"} ${text}`;
+      message.textContent = (sender === "bot" ? "🤖 " : "🧑 ") + text;
       chat.appendChild(message);
       chat.scrollTop = chat.scrollHeight;
     }
@@ -78,6 +132,11 @@
       recognition.onerror = function(event) {
         alert("Voice recognition error: " + event.error);
       };
+    }
+
+    function resetChat() {
+      chat.innerHTML = '';
+      addMessage("🤖 Hello! I'm your weather partner. Would you like to talk about today's weather?", "bot");
     }
   </script>
 </body>
