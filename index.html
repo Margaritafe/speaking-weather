@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather Chatbot (Speaking Practice - B2)</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f2f2f2; padding: 20px; }
+    .chat-box { max-width: 700px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+    .message { margin-bottom: 15px; }
+    .bot { color: #003366; font-weight: bold; }
+    .user { color: #007700; }
+    button { padding: 10px 20px; margin-top: 10px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <div class="chat-box" id="chat">
+    <div class="message bot">🤖 Hello! I'm your weather partner. Would you like to talk about today's weather?</div>
+  </div>
+
+  <button onclick="startListening()">🎤 Speak</button>
+
+  <script>
+    const chat = document.getElementById("chat");
+
+    function addMessage(text, sender) {
+      const message = document.createElement("div");
+      message.className = `message ${sender}`;
+      message.innerHTML = `${sender === "bot" ? "🤖" : "🧑"} ${text}`;
+      chat.appendChild(message);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function botReply(userText) {
+      let reply = "Hmm, could you say that again?";
+
+      const text = userText.toLowerCase();
+
+      if (text.includes("sunny")) {
+        reply = "That's great! Sunny days always make people happy.";
+      } else if (text.includes("rain") || text.includes("raining") || text.includes("rainy")) {
+        reply = "Oh no! Don't forget your umbrella.";
+      } else if (text.includes("windy")) {
+        reply = "Yes, it's quite breezy today, isn't it?";
+      } else if (text.includes("cold") || text.includes("freezing")) {
+        reply = "Make sure to bundle up! It's chilly out there.";
+      } else if (text.includes("hot") || text.includes("heat")) {
+        reply = "Yes, this heatwave is quite intense.";
+      } else if (text.includes("forecast")) {
+        reply = "According to the forecast, it's going to be cloudy later.";
+      } else if (text.includes("climate change") || text.includes("global warming")) {
+        reply = "That's an important topic. The weather is definitely changing globally.";
+      } else if (text.includes("thank")) {
+        reply = "You're welcome! Stay safe and enjoy the weather!";
+      }
+
+      setTimeout(() => addMessage(reply, "bot"), 600);
+    }
+
+    function startListening() {
+      if (!('webkitSpeechRecognition' in window)) {
+        alert("Voice recognition only works in Google Chrome.");
+        return;
+      }
+
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        addMessage(transcript, "user");
+        botReply(transcript);
+      };
+
+      recognition.onerror = function(event) {
+        alert("Voice recognition error: " + event.error);
+      };
+    }
+  </script>
+</body>
+</html>
