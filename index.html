@@ -101,13 +101,27 @@
         reply = "Yes, this heatwave is quite intense.";
       } else if (text.includes("forecast")) {
         reply = "According to the forecast, it's going to be cloudy later.";
-      } else if (text.includes("climate change") || text.includes("global warming")) {
-        reply = "That's an important topic. The weather is definitely changing globally.";
+      } else if (text.includes("cloudy")) {
+        reply = "Cloudy days can be cozy, don’t you think?";
+      } else if (text.includes("snow")) {
+        reply = "Snow is beautiful but can make travel difficult.";
+      } else if (text.includes("humid") || text.includes("humidity")) {
+        reply = "Humidity can make the heat feel worse.";
+      } else if (text.includes("weather") && text.includes("change")) {
+        reply = "Weather changes can be unpredictable.";
       } else if (text.includes("thank")) {
         reply = "You're welcome! Stay safe and enjoy the weather!";
       }
 
-      setTimeout(() => addMessage(reply, "bot"), 600);
+      setTimeout(() => {
+        addMessage(reply, "bot");
+
+        // Síntesis de voz:
+        const utterance = new SpeechSynthesisUtterance(reply);
+        utterance.lang = 'en-US';
+        window.speechSynthesis.speak(utterance);
+
+      }, 600);
     }
 
     function startListening() {
